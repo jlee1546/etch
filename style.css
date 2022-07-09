@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  background-color: lightblue;
+  width: 600px;
+  height: 600px;
+  display: grid;
+}
+
+.wrapper div {
+  border: 1px solid red;
+}
+
+.blue {
+  background: blue;
+}
