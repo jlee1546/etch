@@ -23,6 +23,12 @@ body {
   border: 1px solid red;
 }
 
+.controls {
+  width: 200px;
+  height: 600px;
+  border: 1px solid red;
+}
+
 .blue {
   background: blue;
 }
