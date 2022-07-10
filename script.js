@@ -33,7 +33,6 @@ const gridSize = (number) => {
 // change background color of div when mouse over
 const changeBackgroundColor = (e) => {
   const element = e.target;
-  console.log(element);
   element.classList.add("blue");
 };
 
@@ -44,3 +43,12 @@ const addListenerToDivs = () => {
     div.addEventListener("mouseover", changeBackgroundColor)
   );
 };
+
+// clears the screen (reverts divs to original color)
+const clearScreen = () => {
+  const divs = document.querySelectorAll(".wrapper div");
+  divs.forEach((div) => div.classList.remove("blue"));
+};
+
+// add eventlistener to clear button
+document.querySelector(".clear").addEventListener("click", clearScreen);
