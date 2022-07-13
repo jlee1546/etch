@@ -13,22 +13,43 @@ body {
 }
 
 .wrapper {
-  background-color: lightblue;
+  background-color: rgb(192, 195, 196);
   width: 600px;
   height: 600px;
   display: grid;
 }
 
 .wrapper div {
-  border: 1px solid red;
 }
 
 .controls {
   width: 200px;
   height: 600px;
   border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  background: linear-gradient(#2193b0, #6dd5ed);
 }
 
-.blue {
-  background: blue;
+.controls > div:first-of-type {
+  font-size: 1.3rem;
+}
+
+.controls > div:nth-of-type(2) {
+  font-size: 1.3rem;
+}
+
+.controls button {
+  width: 75px;
+  height: 75px;
+  border-radius: 100%;
+  margin: 1rem 0;
+  border: none;
+}
+
+.color-picker {
+  display: flex;
+  flex-direction: column;
 }
