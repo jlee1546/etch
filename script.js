@@ -1,5 +1,6 @@
 // script file for EAS
-let drawingColor = "black";
+let drawingColor = "rgba(0,0,0,1)";
+let shader = false;
 // draws the inital grid
 window.addEventListener("load", function () {
   numberDivs(16);
@@ -35,7 +36,11 @@ const gridSize = (number) => {
 // change background color of div when mouse over
 const changeBackgroundColor = (e) => {
   const element = e.target;
-  element.style.cssText = `background: ${drawingColor} `;
+
+  if (shader) {
+  } else {
+    element.style.cssText = `background: ${drawingColor} `;
+  }
 };
 
 // add eventlistener to all divs within .wrapper
@@ -93,15 +98,23 @@ const removeDivs = () => {
 // changes the color of the divs
 const colorPicker = (e) => {
   const color = e.target;
-  console.log(color.id);
+
   if (color.id === "red") {
-    drawingColor = "red";
+    drawingColor = "rgba(255,0,0,1)";
   } else if (color.id === "blue") {
-    drawingColor = "blue";
+    drawingColor = "rgba(0,0,255,1)";
   } else if (color.id === "green") {
-    drawingColor = "green";
+    drawingColor = "rgba(0,255,0,1)";
   } else if (color.id === "random") {
     drawingColor = randomColor();
+  } else if (color.id === "shader") {
+    if (shader === false) {
+      shader = true;
+      color.classList.toggle("on");
+    } else {
+      shader = false;
+      color.classList.toggle("on");
+    }
   }
 };
 
@@ -111,8 +124,10 @@ const randomColor = () => {
   let blue = Math.floor(Math.random() * 255);
   let green = Math.floor(Math.random() * 255);
 
-  return `rgb(${red},${blue},${green})`;
+  return `rgba(${red},${blue},${green},1)`;
 };
+
+// applies a 10% shade increase
 
 // add eventlisteners to color picker buttons
 const colors = document.querySelectorAll(".color");
