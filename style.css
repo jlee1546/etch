@@ -96,8 +96,25 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Roboto Mono", monospace;
 }
 
-.on {
+.red {
   background: red;
+}
+
+.blue {
+  background: blue;
+}
+
+.green {
+  background: green;
+}
+
+.random {
+  background: orange;
+}
+
+.shader {
+  background: grey;
 }
