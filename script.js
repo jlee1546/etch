@@ -1,5 +1,6 @@
 // script file for EAS
-let drawingColor = "rgba(0,0,0,1)";
+let drawingColor = "rgba(0,0,0,1.0)";
+let shadingColor = "rgba(0,0,0,0.1)";
 let shader = false;
 // draws the inital grid
 window.addEventListener("load", function () {
@@ -36,10 +37,21 @@ const gridSize = (number) => {
 // change background color of div when mouse over
 const changeBackgroundColor = (e) => {
   const element = e.target;
+  const initialColorShade = "rgba(0,0,0,0.1)";
+  console.log(element);
+  let color = element.style.background;
 
   if (shader) {
+    if (color === "") {
+      element.style.background = initialColorShade;
+
+      console.log(2);
+    } else {
+      let newColor = incrementColorShade(color);
+      element.style.background = newColor;
+    }
   } else {
-    element.style.cssText = `background: ${drawingColor} `;
+    element.style.background = drawingColor;
   }
 };
 
@@ -100,20 +112,45 @@ const colorPicker = (e) => {
   const color = e.target;
 
   if (color.id === "red") {
-    drawingColor = "rgba(255,0,0,1)";
+    if (drawingColor === "rgba(255,0,0,1)") {
+      drawingColor = "rgba(0,0,0,1)";
+      color.classList.toggle("red");
+    } else {
+      drawingColor = "rgba(255,0,0,1)";
+      color.classList.toggle("red");
+    }
   } else if (color.id === "blue") {
-    drawingColor = "rgba(0,0,255,1)";
+    if (drawingColor === "rgba(0,0,255,1)") {
+      drawingColor = "rgba(0,0,0,1)";
+      color.classList.toggle("blue");
+    } else {
+      drawingColor = "rgba(0,0,255,1)";
+      color.classList.toggle("blue");
+    }
   } else if (color.id === "green") {
-    drawingColor = "rgba(0,255,0,1)";
+    if (drawingColor === "rgba(255,0,0,1)") {
+      drawingColor = "rgba(0,255,0,1)";
+      color.classList.toggle("green");
+    } else {
+      drawingColor = "rgba(0,255,0,1)";
+      color.classList.toggle("green");
+    }
   } else if (color.id === "random") {
-    drawingColor = randomColor();
+    if (color.classList.contains("random")) {
+      drawingColor = "rgba(0,0,0,1)";
+      color.classList.toggle("random");
+    } else {
+      drawingColor = randomColor();
+      color.classList.toggle("random");
+    }
   } else if (color.id === "shader") {
     if (shader === false) {
       shader = true;
-      color.classList.toggle("on");
+      color.classList.toggle("shader");
     } else {
       shader = false;
-      color.classList.toggle("on");
+      shadingColor = "rgba(0,0,0,0.1)";
+      color.classList.toggle("shader");
     }
   }
 };
@@ -127,7 +164,30 @@ const randomColor = () => {
   return `rgba(${red},${blue},${green},1)`;
 };
 
+// get rgba values
+
+const extractRGBA = (color) => {
+  let lastNumber = color.match(
+    /rgba\(\s*(-?\d+|-?\d*\.\d+(?=%))(%?)\s*,\s*(-?\d+|-?\d*\.\d+(?=%))(\2)\s*,\s*(-?\d+|-?\d*\.\d+(?=%))(\2)\s*,\s*(-?\d+|-?\d*.\d+)\s*\)/
+  );
+
+  return lastNumber[7];
+};
+
 // applies a 10% shade increase
+const incrementColorShade = (color) => {
+  let shadedColor = color;
+  let newShadedColor = shadedColor.match(
+    /rgba\(\s*(-?\d+|-?\d*\.\d+(?=%))(%?)\s*,\s*(-?\d+|-?\d*\.\d+(?=%))(\2)\s*,\s*(-?\d+|-?\d*\.\d+(?=%))(\2)\s*,\s*(-?\d+|-?\d*.\d+)\s*\)/
+  );
+  let increment = 0.1;
+  let alpha = +newShadedColor[7];
+
+  if (alpha < 0.9) {
+    alpha += increment;
+  }
+  return `rgba(${+newShadedColor[1]},${+newShadedColor[3]},${+newShadedColor[5]},${alpha})`;
+};
 
 // add eventlisteners to color picker buttons
 const colors = document.querySelectorAll(".color");
