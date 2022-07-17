@@ -46,7 +46,7 @@ function changeBackgroundColor(e) {
       element.style.background = initialColorShade;
     } else {
       let newColor = incrementColorShade(color);
-      console.log(`NewColor is ${newColor}`);
+
       element.style.background = newColor;
     }
   } else {
@@ -54,11 +54,23 @@ function changeBackgroundColor(e) {
   }
 }
 
+// change individual background to random color
+function changeBackgroundRandomColor(e) {
+  let element = e.target;
+
+  element.style.background = randomColor();
+}
+
 // add eventlistener to all divs within .wrapper
 function addListenerToDivs() {
   const divs = document.querySelectorAll(".wrapper div");
   divs.forEach((div) =>
-    div.addEventListener("mouseover", changeBackgroundColor)
+    div.addEventListener("mouseover", function (e) {
+      let randomButton = document.querySelector("#random");
+      return randomButton.classList.contains("random")
+        ? changeBackgroundRandomColor(e)
+        : changeBackgroundColor(e);
+    })
   );
 }
 
@@ -110,59 +122,41 @@ function colorPicker(e) {
     if (drawingColor === "rgba(255,0,0,1)") {
       drawingColor = "rgba(0,0,0,1)";
       color.classList.toggle(color.id);
-      console.log("red1");
-      console.log(`Shader is ${shader}`);
-      console.log(`Drawing color is ${drawingColor}`);
     } else {
       drawingColor = "rgba(255,0,0,1)";
       color.classList.toggle(color.id);
       toggleOffOtherClasses(color.id);
       shader = false;
-      console.log("red2");
-      console.log(`Shader is ${shader}`);
-      console.log(`Drawing color is ${drawingColor}`);
     }
   } else if (color.id === "blue") {
     if (drawingColor === "rgba(0,0,255,1)") {
       drawingColor = "rgba(0,0,0,1)";
       color.classList.toggle(color.id);
-      console.log("blue1");
-      console.log(shader);
     } else {
       drawingColor = "rgba(0,0,255,1)";
       color.classList.toggle(color.id);
       toggleOffOtherClasses(color.id);
       shader = false;
-      console.log("blue2");
-      console.log(shader);
     }
   } else if (color.id === "green") {
     if (drawingColor === "rgba(0,255,0,1)") {
       drawingColor = "rgba(0,0,0,1)";
       color.classList.toggle(color.id);
-      console.log("green1");
-      console.log(shader);
     } else {
       drawingColor = "rgba(0,255,0,1)";
       color.classList.toggle(color.id);
       toggleOffOtherClasses(color.id);
       shader = false;
-      console.log("green2");
-      console.log(shader);
     }
   } else if (color.id === "random") {
     if (color.classList.contains(color.id)) {
       drawingColor = "rgba(0,0,0,1)";
       color.classList.toggle(color.id);
-      console.log("random1");
-      console.log(shader);
     } else {
       drawingColor = randomColor();
       color.classList.toggle(color.id);
       toggleOffOtherClasses(color.id);
       shader = false;
-      console.log("random2");
-      console.log(shader);
     }
   } else if (color.id === "shader") {
     if (shader === false) {
@@ -170,17 +164,10 @@ function colorPicker(e) {
       color.classList.toggle(color.id);
       drawingColor = "rgba(0,0,0,1.0)";
       toggleOffOtherClasses(color.id);
-      console.log("shader1");
-      console.log(`Shader is ${shader}`);
-      console.log(`Drawing color is ${drawingColor}`);
     } else {
-      console.log(2);
       color.classList.toggle(color.id);
       toggleOffOtherClasses(color.id);
       shader = false;
-      console.log("shader2");
-      console.log(`Shader is ${shader}`);
-      console.log(`Drawing color is ${drawingColor}`);
     }
   }
 }
