@@ -8,6 +8,14 @@ window.addEventListener("load", function () {
   gridSize(16);
   addListenerToDivs();
 });
+
+// swap image on power button
+function turnOnPower() {
+  let power = document.querySelector("#powerButton");
+  power.classList.contains("powerOff")
+    ? (power.classList = "powerOn")
+    : (power.classList = "powerOff");
+}
 // creates new div elements
 function createDiv() {
   const newDiv = document.createElement("div");
@@ -218,6 +226,9 @@ function incrementColorShade(color) {
 }
 
 // Button eventlisteners
+
+// add event listener to power button
+document.querySelector("#powerButton").addEventListener("click", turnOnPower);
 
 // add eventlistener to clear button
 document.querySelector(".clear").addEventListener("click", clearScreen);
