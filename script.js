@@ -9,70 +9,71 @@ window.addEventListener("load", function () {
   addListenerToDivs();
 });
 // creates new div elements
-const createDiv = () => {
+function createDiv() {
   const newDiv = document.createElement("div");
   return newDiv;
-};
+}
 
 // adds new div to .wrapper container
-const addDiv = () => {
+function addDiv() {
   const wrapper = document.querySelector(".wrapper");
   wrapper.appendChild(createDiv());
-};
+}
 
 // controls number of divs put into .wrapper container
-const numberDivs = (number) => {
+function numberDivs(number) {
   let numberOfDivs = number ** 2;
   for (let i = 1; i <= numberOfDivs; i++) {
     addDiv();
   }
-};
+}
 
 // change grid size
-const gridSize = (number) => {
+function gridSize(number) {
   const wrapper = document.querySelector(".wrapper");
   wrapper.style.cssText = `grid-template-columns: repeat(${number}, 1fr)`;
-};
+}
 
 // change background color of div when mouse over
-const changeBackgroundColor = (e) => {
+function changeBackgroundColor(e) {
   const element = e.target;
   const initialColorShade = "rgba(0,0,0,0.1)";
-  console.log(element);
+
   let color = element.style.background;
 
   if (shader) {
-    if (color === "") {
+    if (color === "" || !color.includes("a")) {
       element.style.background = initialColorShade;
-
-      console.log(2);
     } else {
       let newColor = incrementColorShade(color);
+      console.log(`NewColor is ${newColor}`);
       element.style.background = newColor;
     }
   } else {
     element.style.background = drawingColor;
   }
-};
+}
 
 // add eventlistener to all divs within .wrapper
-const addListenerToDivs = () => {
+function addListenerToDivs() {
   const divs = document.querySelectorAll(".wrapper div");
   divs.forEach((div) =>
     div.addEventListener("mouseover", changeBackgroundColor)
   );
-};
+}
 
 // clears the screen (reverts divs to original color)
-const clearScreen = () => {
-  drawingColor = "black";
+function clearScreen() {
+  drawingColor = "rgba(0,0,0,1.0)";
+  toggleOffOtherClasses("none");
+  shader = false;
   removeDivs();
   numberDivs(16);
   gridSize(16);
   addListenerToDivs();
-};
+}
 
-const changeGridSize = () => {
+function changeGridSize() {
   let inputNumber;
   let flag = false;
 
@@ -91,92 +92,132 @@ const changeGridSize = () => {
   numberDivs(inputNumber);
   gridSize(inputNumber);
   addListenerToDivs();
-};
-
-// add eventlistener to clear button
-document.querySelector(".clear").addEventListener("click", clearScreen);
-
-// add eventlistener to change button
-document.querySelector(".change").addEventListener("click", changeGridSize);
+}
 
 // remove divs from .wrapper
-const removeDivs = () => {
+function removeDivs() {
   const divs = document.querySelectorAll(".wrapper div");
   for (const div of divs) {
     div.remove();
   }
-};
+}
 
 // changes the color of the divs
-const colorPicker = (e) => {
+function colorPicker(e) {
   const color = e.target;
 
   if (color.id === "red") {
     if (drawingColor === "rgba(255,0,0,1)") {
       drawingColor = "rgba(0,0,0,1)";
-      color.classList.toggle("red");
+      color.classList.toggle(color.id);
+      console.log("red1");
+      console.log(`Shader is ${shader}`);
+      console.log(`Drawing color is ${drawingColor}`);
     } else {
       drawingColor = "rgba(255,0,0,1)";
-      color.classList.toggle("red");
+      color.classList.toggle(color.id);
+      toggleOffOtherClasses(color.id);
+      shader = false;
+      console.log("red2");
+      console.log(`Shader is ${shader}`);
+      console.log(`Drawing color is ${drawingColor}`);
     }
   } else if (color.id === "blue") {
     if (drawingColor === "rgba(0,0,255,1)") {
       drawingColor = "rgba(0,0,0,1)";
-      color.classList.toggle("blue");
+      color.classList.toggle(color.id);
+      console.log("blue1");
+      console.log(shader);
     } else {
       drawingColor = "rgba(0,0,255,1)";
-      color.classList.toggle("blue");
+      color.classList.toggle(color.id);
+      toggleOffOtherClasses(color.id);
+      shader = false;
+      console.log("blue2");
+      console.log(shader);
     }
   } else if (color.id === "green") {
-    if (drawingColor === "rgba(255,0,0,1)") {
-      drawingColor = "rgba(0,255,0,1)";
-      color.classList.toggle("green");
+    if (drawingColor === "rgba(0,255,0,1)") {
+      drawingColor = "rgba(0,0,0,1)";
+      color.classList.toggle(color.id);
+      console.log("green1");
+      console.log(shader);
     } else {
       drawingColor = "rgba(0,255,0,1)";
-      color.classList.toggle("green");
+      color.classList.toggle(color.id);
+      toggleOffOtherClasses(color.id);
+      shader = false;
+      console.log("green2");
+      console.log(shader);
     }
   } else if (color.id === "random") {
-    if (color.classList.contains("random")) {
+    if (color.classList.contains(color.id)) {
       drawingColor = "rgba(0,0,0,1)";
-      color.classList.toggle("random");
+      color.classList.toggle(color.id);
+      console.log("random1");
+      console.log(shader);
     } else {
       drawingColor = randomColor();
-      color.classList.toggle("random");
+      color.classList.toggle(color.id);
+      toggleOffOtherClasses(color.id);
+      shader = false;
+      console.log("random2");
+      console.log(shader);
     }
   } else if (color.id === "shader") {
     if (shader === false) {
       shader = true;
-      color.classList.toggle("shader");
+      color.classList.toggle(color.id);
+      drawingColor = "rgba(0,0,0,1.0)";
+      toggleOffOtherClasses(color.id);
+      console.log("shader1");
+      console.log(`Shader is ${shader}`);
+      console.log(`Drawing color is ${drawingColor}`);
     } else {
+      console.log(2);
+      color.classList.toggle(color.id);
+      toggleOffOtherClasses(color.id);
       shader = false;
-      shadingColor = "rgba(0,0,0,0.1)";
-      color.classList.toggle("shader");
+      console.log("shader2");
+      console.log(`Shader is ${shader}`);
+      console.log(`Drawing color is ${drawingColor}`);
     }
   }
-};
+}
+
+// toggles off other buttons when current button is activated
+function toggleOffOtherClasses(className) {
+  let colorPickerButtons = document.querySelectorAll(".color");
+
+  for (let i = 0; i <= colorPickerButtons.length - 1; i++) {
+    if (!(colorPickerButtons[i].id === className)) {
+      colorPickerButtons[i].classList.remove(colorPickerButtons[i].id);
+    }
+  }
+}
 
 // generates a random color
-const randomColor = () => {
+function randomColor() {
   let red = Math.floor(Math.random() * 255);
   let blue = Math.floor(Math.random() * 255);
   let green = Math.floor(Math.random() * 255);
 
   return `rgba(${red},${blue},${green},1)`;
-};
+}
 
 // get rgba values
-
-const extractRGBA = (color) => {
+function extractRGBA(color) {
   let lastNumber = color.match(
     /rgba\(\s*(-?\d+|-?\d*\.\d+(?=%))(%?)\s*,\s*(-?\d+|-?\d*\.\d+(?=%))(\2)\s*,\s*(-?\d+|-?\d*\.\d+(?=%))(\2)\s*,\s*(-?\d+|-?\d*.\d+)\s*\)/
   );
 
   return lastNumber[7];
-};
+}
 
 // applies a 10% shade increase
-const incrementColorShade = (color) => {
+function incrementColorShade(color) {
   let shadedColor = color;
+
   let newShadedColor = shadedColor.match(
     /rgba\(\s*(-?\d+|-?\d*\.\d+(?=%))(%?)\s*,\s*(-?\d+|-?\d*\.\d+(?=%))(\2)\s*,\s*(-?\d+|-?\d*\.\d+(?=%))(\2)\s*,\s*(-?\d+|-?\d*.\d+)\s*\)/
   );
@@ -187,7 +228,15 @@ const incrementColorShade = (color) => {
     alpha += increment;
   }
   return `rgba(${+newShadedColor[1]},${+newShadedColor[3]},${+newShadedColor[5]},${alpha})`;
-};
+}
+
+// Button eventlisteners
+
+// add eventlistener to clear button
+document.querySelector(".clear").addEventListener("click", clearScreen);
+
+// add eventlistener to change button
+document.querySelector(".change").addEventListener("click", changeGridSize);
 
 // add eventlisteners to color picker buttons
 const colors = document.querySelectorAll(".color");
