@@ -118,3 +118,25 @@ footer {
 .shader {
   background: grey;
 }
+
+.powerOff {
+  background: url(assets/powerOff.png);
+  background-repeat: no-repeat;
+
+  background-position: center;
+  height: 30px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.powerOn {
+  background: url(assets/powerOn.png);
+  background-repeat: no-repeat;
+
+  background-position: center;
+  height: 30px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
