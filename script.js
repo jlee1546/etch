@@ -2,20 +2,73 @@
 let drawingColor = "rgba(0,0,0,1.0)";
 let shadingColor = "rgba(0,0,0,0.1)";
 let shader = false;
-// draws the inital grid
-window.addEventListener("load", function () {
+
+//  TURNS POWER ON TO THE GAME AND ACTIVATES EVENTLISTENERS
+function poweredOn() {
+  let power = document.querySelector("#powerButton");
+  let wrapper = document.querySelector(".wrapper");
+  drawingColor = "rgba(0,0,0,1.0)";
+
+  power.classList = "";
+  power.classList = "powerOn";
+
   numberDivs(16);
   gridSize(16);
   addListenerToDivs();
-});
+
+  wrapper.style.background = "grey";
+
+  // Button eventlisteners
+
+  // add eventlistener to clear button
+  document.querySelector(".clear").addEventListener("click", clearScreen);
+
+  // add eventlistener to change button
+  document.querySelector(".change").addEventListener("click", changeGridSize);
+
+  // add eventlisteners to color picker buttons
+  const colors = document.querySelectorAll(".color");
+  colors.forEach((color) => color.addEventListener("click", colorPicker));
+}
+
+// TURNS POWER OFF TO THE GAME AND DEACTIVATES EVENTLISTENERS
+function poweredOff() {
+  let power = document.querySelector("#powerButton");
+  let wrapper = document.querySelector(".wrapper");
+
+  power.classList = "";
+  power.classList = "powerOff";
+
+  removeDivs();
+
+  toggleOffOtherClasses();
+
+  wrapper.style.background = "rgba(0,0,0,1.0)";
+
+  // Remove event listeners
+
+  // remove eventlistener to clear button
+  document.querySelector(".clear").removeEventListener("click", clearScreen);
+
+  // remove eventlistener to change button
+  document
+    .querySelector(".change")
+    .removeEventListener("click", changeGridSize);
+
+  // remove eventlisteners to color picker buttons
+  const colors = document.querySelectorAll(".color");
+  colors.forEach((color) => color.removeEventListener("click", colorPicker));
+}
 
 // swap image on power button
 function turnOnPower() {
   let power = document.querySelector("#powerButton");
-  power.classList.contains("powerOff")
-    ? (power.classList = "powerOn")
-    : (power.classList = "powerOff");
+  power.classList.contains("powerOff") ? poweredOn() : poweredOff();
 }
+
+// add event listener to power button
+document.querySelector("#powerButton").addEventListener("click", turnOnPower);
+
 // creates new div elements
 function createDiv() {
   const newDiv = document.createElement("div");
@@ -84,16 +137,21 @@ function addListenerToDivs() {
 
 // clears the screen (reverts divs to original color)
 function clearScreen() {
+  let wrapper = document.querySelector(".wrapper");
+
   drawingColor = "rgba(0,0,0,1.0)";
-  toggleOffOtherClasses("none");
+  toggleOffOtherClasses();
   shader = false;
+
   removeDivs();
   numberDivs(16);
   gridSize(16);
   addListenerToDivs();
+  wrapper.style.background = "grey";
 }
 
 function changeGridSize() {
+  let wrapper = document.querySelector(".wrapper");
   let inputNumber;
   let flag = false;
 
@@ -112,6 +170,7 @@ function changeGridSize() {
   numberDivs(inputNumber);
   gridSize(inputNumber);
   addListenerToDivs();
+  wrapper.style.background = "grey";
 }
 
 // remove divs from .wrapper
@@ -224,18 +283,3 @@ function incrementColorShade(color) {
   }
   return `rgba(${+newShadedColor[1]},${+newShadedColor[3]},${+newShadedColor[5]},${alpha})`;
 }
-
-// Button eventlisteners
-
-// add event listener to power button
-document.querySelector("#powerButton").addEventListener("click", turnOnPower);
-
-// add eventlistener to clear button
-document.querySelector(".clear").addEventListener("click", clearScreen);
-
-// add eventlistener to change button
-document.querySelector(".change").addEventListener("click", changeGridSize);
-
-// add eventlisteners to color picker buttons
-const colors = document.querySelectorAll(".color");
-colors.forEach((color) => color.addEventListener("click", colorPicker));
